@@ -1,4 +1,5 @@
 const User = require('../users/users-model');
+const Posts = require('../posts/posts-model');
 
 function logger(req, res, next) {
   console.log(`Request Method: ${req.method}, Request URL: ${req.url}, Request Timestamp: ${new Date().toUTCString()}`)
@@ -47,9 +48,28 @@ function validatePost(req, res, next) {
   }
 }
 
+function validatePostId(req, res, next) {
+  const { id } = req.params;
+
+  Posts.getById(id)
+    .then((post) => {
+      if (post){
+        console.log(`Post ${post} found.`)
+        req.post=post
+        next();
+      } else {
+        res.status(404).json({ message: "post not found" })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Error ${err}`})
+    })
+}
+
 module.exports = {
   logger,
   validateUserId,
   validateUser,
-  validatePost
+  validatePost,
+  validatePostId
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const mw = require('./middleware/middleware')
+const mw = require('../middleware/middleware')
 
 const router = express.Router();
 
@@ -39,4 +39,4 @@ router.post('/:id/posts', (req, res) => {
   // and another middleware to check that the request body is valid
 });
 
-// do not forget to export the router
+module.exports = router
